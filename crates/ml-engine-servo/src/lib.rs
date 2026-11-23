@@ -24,3 +24,15 @@ impl EngineBackend for ServoEngineBackend {
         // To be connected to Servo WebView in F0 prototype spike
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_servo_backend_creation() {
+        let mut backend = ServoEngineBackend::new();
+        let url = Url::parse("about:blank").expect("valid URL");
+        backend.load_url(&url);
+    }
+}
