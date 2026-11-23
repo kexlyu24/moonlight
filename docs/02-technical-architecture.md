@@ -91,20 +91,20 @@ Moonlight is one browser process that owns the UI, data, extra networking, and t
 - **Alpha:** a single process; the engine runs on its own thread. A content crash can take down the app, which is acceptable for Alpha.
 - **Beta/1.0:** web content in separate processes, using the engine's multiprocess mode once it is stable; extension service workers run in hidden WebViews that shut down after 30 seconds idle, mirroring the MV3 lifecycle.
 
-**Hooks needed from the engine** (each verified in the Phase 0 spike):
+**Hooks needed from the engine** (verified in the Phase 0 spike):
 
-| ID | Hook | Used for |
-| --- | --- | --- |
-| H1 | Custom scheme handler (`moonlight://`, `chrome-extension://`) | Internal pages, extension files |
-| H2 | Request interception: block, redirect, modify headers | declarativeNetRequest, built-in blocker, shield, cookies |
-| H3 | Script injection at `document_start` / `document_end` / `document_idle` | Content scripts |
-| H4 | Isolated world (extension JS separated from page JS) | Content script security |
-| H5 | JS ↔ Rust bridge with async responses | All `chrome.*` APIs |
-| H6 | Hidden / offscreen WebView | Background service worker, `offscreen` |
-| H7 | Popup WebView that sizes itself to its content | Extension popups |
-| H8 | Report of web APIs that were called but are unsupported | Compatibility banner |
+| ID | Hook | Used for | Status | Evidence and implementation path |
+| --- | --- | --- | --- | --- |
+| H1 | Custom scheme handler (`moonlight://`, `chrome-extension://`) | Internal pages (`ml-pages`), extension resources (`ml-ext`) | **Present** | `servo::net::protocols::{ProtocolHandler, ProtocolRegistry}`. Supported natively via `ServoBuilder::protocol_registry(ProtocolRegistry::with_internal_protocols())`. |
+| H2 | Request interception: block, redirect, modify headers | `ml-net` built-in tracker blocker, declarativeNetRequest, shield, cookies | **Present** | `servo::WebViewDelegate::load_web_resource(&self, webview, load: WebResourceLoad)`. Embedders call `load.intercept(response)` for redirection/header modification, or `InterceptedWebResourceLoad::cancel()` to block requests. |
+| H3 | Script injection at `document_start` / `document_end` / `document_idle` | Content scripts | **Addable** | `servo::UserContentManager` and `UserScript` inject at `<head>` creation (`document_start` in `dom/userscripts.rs`). Differentiating `document_end` and `document_idle` requires extending `UserScript` with an execution phase enum hooked to `DOMContentLoaded` and `load`, or triggering `WebView::evaluate_javascript` from load status events. |
+| H4 | Isolated world (extension JS separated from page JS) | Content script security (NFR-06) | **Addable** | Currently `UserScript` evaluates in the page's realm (`enter_auto_realm(cx, global_scope)`). An isolated world requires creating a dedicated SpiderMonkey `JS::Realm` with DOM access but isolated globals/prototypes. *(Hard requirement to close Phase F2; prohibited in releases without isolated world).* |
+| H5 | JS ↔ Rust bridge with async responses | All `chrome.*` extension APIs | **Addable** | Rust → JS: `WebView::evaluate_javascript(script, callback)`. JS → Rust: currently achievable via internal custom protocol requests (`moonlight-api://` via H1/H2), with an upstream `postMessage` DOM bridge proposed for lower latency. |
+| H6 | Hidden / offscreen WebView | MV3 background service worker, `chrome.offscreen` | **Present** | Supported via `servo::OffscreenRenderingContext` (implementing `RenderingContext`) as well as `WebView::hide()` / `WebView::show()`. |
+| H7 | Popup WebView that sizes itself to its content | Extension action popups | **Addable** | `WebView::resize(PhysicalSize)` exists. Content dimensions can be determined by evaluating `document.documentElement.scrollHeight` / `scrollWidth` via `evaluate_javascript`, or by introducing an upstream `notify_content_size_changed` delegate hook. |
+| H8 | Report of web APIs that were called but are unsupported | Compatibility banner (FR-30) | **Addable** | Unsupported Web IDL interfaces currently throw `TypeError` or return `undefined`. Embedders can inject a Proxy/shim via `UserScript` to capture missing API access, or upstream a Web IDL lookup fallback callback. |
 
-Hooks Servo does not have yet are proposed as upstream contributions, not patched in a fork, so monthly upgrades stay cheap.
+Summary: All 8 hooks are either Present (H1, H2, H6) or Addable (H3, H4, H5, H7, H8). Zero blockers. Hooks Servo does not have yet are proposed as upstream contributions, not patched in a fork, so monthly upgrades stay cheap.
 
 ## Cargo workspace structure and dependencies
 
