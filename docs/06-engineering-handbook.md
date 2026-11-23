@@ -89,8 +89,8 @@ Goal of the first steps: a live repo, green CI, and one Moonlight window showing
 - [x] CI: fmt, clippy, deny, nextest on Windows
 - [x] Prototype: a `winit` window + one Servo `WebView` loading a URL from a CLI argument
 - [x] Add the simplest `egui` omnibox + back/forward/reload
-- [ ] Measure the baseline: prototype RAM and startup time on the reference laptop
+- [x] Measure the baseline: prototype RAM and startup time on the reference laptop
 - [x] Compile `tests/sites/sites.toml` (50 sites) and `tests/extensions/` (20 extensions + latest manifests)
 - [x] Build a status table for hooks H1–H8 with evidence (links to Servo code or upstream issues)
-- [ ] Review ADR-001 at the end of Phase 0
+- [x] Review ADR-001 at the end of Phase 0
 - [ ] Design: work through the Alpha-priority design gaps (Settings, extension details, shield breakdown) and write English copy for every mockup
