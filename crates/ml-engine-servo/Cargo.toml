@@ -14,6 +14,7 @@ winit.workspace = true
 euclid.workspace = true
 tracing.workspace = true
 rustls.workspace = true
+glow.workspace = true
 
 [lints]
 workspace = true

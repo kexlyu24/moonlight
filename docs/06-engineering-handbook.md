@@ -88,7 +88,7 @@ Goal of the first steps: a live repo, green CI, and one Moonlight window showing
 - [x] Pin the Rust version in `rust-toolchain.toml` and the `servo` version in `Cargo.toml`
 - [x] CI: fmt, clippy, deny, nextest on Windows
 - [x] Prototype: a `winit` window + one Servo `WebView` loading a URL from a CLI argument
-- [ ] Add the simplest `egui` omnibox + back/forward/reload
+- [x] Add the simplest `egui` omnibox + back/forward/reload
 - [ ] Measure the baseline: prototype RAM and startup time on the reference laptop
 - [ ] Compile `tests/sites/sites.toml` (50 sites) and `tests/extensions/` (20 extensions + latest manifests)
 - [ ] Build a status table for hooks H1–H8 with evidence (links to Servo code or upstream issues)

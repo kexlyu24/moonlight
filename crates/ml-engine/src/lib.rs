@@ -58,6 +58,18 @@ pub trait EngineBackend {
     /// Load a URL into the primary view.
     fn load_url(&mut self, url: &Url) -> Result<(), EngineError>;
 
+    /// Navigate back in session history.
+    fn go_back(&mut self);
+
+    /// Navigate forward in session history.
+    fn go_forward(&mut self);
+
+    /// Reload the current page.
+    fn reload(&mut self);
+
+    /// Retrieve the current URL of the primary view.
+    fn current_url(&self) -> Option<Url>;
+
     /// Notify the engine of window resize.
     fn resize(&mut self, width: u32, height: u32);
 
@@ -69,6 +81,11 @@ pub trait EngineBackend {
 
     /// Spin the engine event loop to process internal messages and tasks.
     fn spin_event_loop(&mut self);
+
+    /// Optional OpenGL context handle for shells that render UI overlays via glow.
+    fn glow_context(&self) -> Option<std::sync::Arc<glow::Context>> {
+        None
+    }
 }
 
 #[cfg(test)]
@@ -109,6 +126,16 @@ mod tests {
         fn load_url(&mut self, url: &Url) -> Result<(), EngineError> {
             self.loaded = Some(url.clone());
             Ok(())
+        }
+
+        fn go_back(&mut self) {}
+
+        fn go_forward(&mut self) {}
+
+        fn reload(&mut self) {}
+
+        fn current_url(&self) -> Option<Url> {
+            self.loaded.clone()
         }
 
         fn resize(&mut self, width: u32, height: u32) {

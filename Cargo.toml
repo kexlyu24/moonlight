@@ -44,6 +44,12 @@ winit = "0.30"
 raw-window-handle = "0.6"
 euclid = "0.22"
 rustls = "0.23"
+egui = "0.31"
+egui-winit = "0.31"
+egui_glow = "0.31"
+glow = "0.16"
+fluent-bundle = "0.15"
+unic-langid = "0.9"
 
 # Internal workspace crates
 ml-shell = { path = "crates/ml-shell" }

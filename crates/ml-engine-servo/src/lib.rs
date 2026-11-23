@@ -121,6 +121,32 @@ impl EngineBackend for ServoEngineBackend {
         Ok(())
     }
 
+    fn go_back(&mut self) {
+        if let Some(webview) = &self.webview {
+            webview.go_back(1);
+        }
+    }
+
+    fn go_forward(&mut self) {
+        if let Some(webview) = &self.webview {
+            webview.go_forward(1);
+        }
+    }
+
+    fn reload(&mut self) {
+        if let Some(webview) = &self.webview {
+            webview.reload();
+        }
+    }
+
+    fn current_url(&self) -> Option<Url> {
+        if let Some(webview) = &self.webview {
+            webview.url()
+        } else {
+            self.pending_url.clone()
+        }
+    }
+
     fn resize(&mut self, width: u32, height: u32) {
         if let Some(webview) = &self.webview {
             webview.resize(winit::dpi::PhysicalSize::new(width, height));
@@ -143,6 +169,10 @@ impl EngineBackend for ServoEngineBackend {
         if let Some(servo) = &self.servo {
             servo.spin_event_loop();
         }
+    }
+
+    fn glow_context(&self) -> Option<Arc<glow::Context>> {
+        self.rendering_context.as_ref().map(|rc| rc.glow_gl_api())
     }
 }
 

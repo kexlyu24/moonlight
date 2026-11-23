@@ -29,6 +29,8 @@ allow = [
     "0BSD",
     "CDLA-Permissive-2.0",
     "NCSA",
+    "OFL-1.1",
+    "Ubuntu-font-1.0",
 ]
 confidence-threshold = 0.8
 unused-allowed-license = "allow"
