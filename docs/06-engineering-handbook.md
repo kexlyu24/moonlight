@@ -87,7 +87,7 @@ Goal of the first steps: a live repo, green CI, and one Moonlight window showing
 - [x] Create the Cargo workspace following the structure in the [Technical Architecture](02-technical-architecture.md), empty crates with `lib.rs`
 - [x] Pin the Rust version in `rust-toolchain.toml` and the `servo` version in `Cargo.toml`
 - [x] CI: fmt, clippy, deny, nextest on Windows
-- [ ] Prototype: a `winit` window + one Servo `WebView` loading a URL from a CLI argument
+- [x] Prototype: a `winit` window + one Servo `WebView` loading a URL from a CLI argument
 - [ ] Add the simplest `egui` omnibox + back/forward/reload
 - [ ] Measure the baseline: prototype RAM and startup time on the reference laptop
 - [ ] Compile `tests/sites/sites.toml` (50 sites) and `tests/extensions/` (20 extensions + latest manifests)

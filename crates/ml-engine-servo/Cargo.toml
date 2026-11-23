@@ -9,6 +9,11 @@ authors.workspace = true
 ml-engine.workspace = true
 servo.workspace = true
 url.workspace = true
+raw-window-handle.workspace = true
+winit.workspace = true
+euclid.workspace = true
+tracing.workspace = true
+rustls.workspace = true
 
 [lints]
 workspace = true
