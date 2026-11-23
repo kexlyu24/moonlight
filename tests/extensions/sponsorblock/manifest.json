@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "SponsorBlock",
+  "version": "5.8.2",
+  "description": "Skip sponsorships, subscription begs, and intros on YouTube videos",
+  "permissions": [
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*"
+      ],
+      "js": [
+        "sponsorblock.js"
+      ]
+    }
+  ]
+}

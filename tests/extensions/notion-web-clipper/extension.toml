@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "notion-web-clipper"
+name = "Notion Web Clipper"
+category = "Productivity"
+target = "1.0"
+version = "1.0.12"
+api_scope = ["storage", "tabs", "cookies", "action", "runtime"]
+scenario = "Install package, open article fixture page, click action popup, save to mock workspace database"

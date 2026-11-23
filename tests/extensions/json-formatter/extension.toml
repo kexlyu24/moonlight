@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "json-formatter"
+name = "JSON Formatter"
+category = "Developer"
+target = "Alpha"
+version = "0.7.3"
+api_scope = ["storage", "runtime"]
+scenario = "Install package, load raw JSON response fixture, verify syntax highlighting tree and collapsible nodes"

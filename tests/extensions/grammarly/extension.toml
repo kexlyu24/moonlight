@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "grammarly"
+name = "Grammarly"
+category = "Writing"
+target = "1.0"
+version = "14.1130.0"
+api_scope = ["storage", "tabs", "cookies", "runtime"]
+scenario = "Install package, type misspelled sentence in text input fixture, verify underline marker and correction widget"

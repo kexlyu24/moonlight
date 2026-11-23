@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "OneTab",
+  "version": "1.84.0",
+  "description": "Convert tabs into a list to save memory and reduce tab clutter",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "action": {
+    "default_title": "OneTab"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

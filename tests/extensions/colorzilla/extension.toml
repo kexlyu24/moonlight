@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "colorzilla"
+name = "ColorZilla"
+category = "Design"
+target = "1.0"
+version = "4.0.1"
+api_scope = ["storage", "tabs", "scripting", "action", "runtime"]
+scenario = "Install package, activate color picker overlay, click element on test canvas, verify HEX color in clipboard/popup"

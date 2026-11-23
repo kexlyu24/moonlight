@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "dark-reader"
+name = "Dark Reader"
+category = "Page theming"
+target = "Alpha"
+version = "4.9.96"
+api_scope = ["storage", "alarms", "scripting", "action", "runtime"]
+scenario = "Install package, open popup, toggle dark mode on, verify generated CSS injection styles applied to target page"

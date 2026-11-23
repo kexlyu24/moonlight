@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Wappalyzer",
+  "version": "6.10.74",
+  "description": "Identify technologies on websites",
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

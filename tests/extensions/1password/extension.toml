@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "1password"
+name = "1Password"
+category = "Password manager"
+target = "1.0"
+version = "2.28.0"
+api_scope = ["storage", "alarms", "tabs", "idle", "webNavigation", "action", "runtime"]
+scenario = "Install package, authenticate mock session, navigate to credential form, verify inline suggestions badge"

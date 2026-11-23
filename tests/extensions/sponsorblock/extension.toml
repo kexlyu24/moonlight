@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "sponsorblock"
+name = "SponsorBlock"
+category = "Media"
+target = "1.0"
+version = "5.8.2"
+api_scope = ["storage", "alarms", "action", "runtime"]
+scenario = "Install package, open YouTube mock video page, verify skip segment bar injected into video timeline"

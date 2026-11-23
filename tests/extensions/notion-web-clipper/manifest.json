@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Notion Web Clipper",
+  "version": "1.0.12",
+  "description": "Save any page on the web to your Notion workspace",
+  "permissions": [
+    "storage",
+    "tabs",
+    "cookies"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://*.notion.so/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

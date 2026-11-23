@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Momentum",
+  "version": "2.14.3",
+  "description": "Replace new tab page with a personal dashboard featuring to-do, weather, and inspiration",
+  "permissions": [
+    "storage",
+    "alarms",
+    "topSites"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}

@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "react-devtools"
+name = "React Developer Tools"
+category = "Developer (devtools)"
+target = "Post-1.0"
+version = "5.3.1"
+api_scope = ["storage", "scripting", "devtools.panels", "runtime"]
+scenario = "Install package, open React test application, inspect React component tree in developer panel"

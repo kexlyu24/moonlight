@@ -1,0 +1,403 @@
+# Moonlight — 50 Test Sites Suite
+# Defined in docs/06-engineering-handbook.md (Composition of the 50 test sites)
+# Used for Phase F0 baseline, smoke tests, and compatibility tracking.
+
+[[sites]]
+id = "github"
+name = "GitHub"
+category = "Documentation & developer"
+url = "https://github.com"
+smoke_test = "Verify header navigation, search bar, repository feed load, and no fatal script errors"
+priority = "Alpha"
+
+[[sites]]
+id = "docs-rs"
+name = "docs.rs"
+category = "Documentation & developer"
+url = "https://docs.rs"
+smoke_test = "Verify documentation sidebar, search input, trait/struct item anchors, and font rendering"
+priority = "Alpha"
+
+[[sites]]
+id = "mdn"
+name = "MDN Web Docs"
+category = "Documentation & developer"
+url = "https://developer.mozilla.org"
+smoke_test = "Verify interactive code examples, navigation tree, dark mode toggle, and article layout"
+priority = "Alpha"
+
+[[sites]]
+id = "stackoverflow"
+name = "Stack Overflow"
+category = "Documentation & developer"
+url = "https://stackoverflow.com"
+smoke_test = "Verify question list, syntax highlighting, voting UI, and cookie consent banner handling"
+priority = "Alpha"
+
+[[sites]]
+id = "crates-io"
+name = "crates.io"
+category = "Documentation & developer"
+url = "https://crates.io"
+smoke_test = "Verify package search, version history table, copy cargo command button, and stats display"
+priority = "Alpha"
+
+[[sites]]
+id = "rust-lang"
+name = "Rust Programming Language"
+category = "Documentation & developer"
+url = "https://www.rust-lang.org"
+smoke_test = "Verify multilingual selector, install instructions copy snippet, and responsive nav"
+priority = "Alpha"
+
+[[sites]]
+id = "w3schools"
+name = "W3Schools"
+category = "Documentation & developer"
+url = "https://www.w3schools.com"
+smoke_test = "Verify tutorial index, Try-it editor links, sidebar navigation, and search filter"
+priority = "1.0"
+
+[[sites]]
+id = "npm"
+name = "npm"
+category = "Documentation & developer"
+url = "https://www.npmjs.com"
+smoke_test = "Verify package search, README tab rendering, version dropdown, and dependencies list"
+priority = "1.0"
+
+[[sites]]
+id = "pypi"
+name = "PyPI"
+category = "Documentation & developer"
+url = "https://pypi.org"
+smoke_test = "Verify package project description, release history, copy pip button, and search input"
+priority = "1.0"
+
+[[sites]]
+id = "gitlab"
+name = "GitLab"
+category = "Documentation & developer"
+url = "https://gitlab.com"
+smoke_test = "Verify marketing page, sign-in CTA, navigation menus, and enterprise layout"
+priority = "1.0"
+
+[[sites]]
+id = "dev-to"
+name = "DEV Community"
+category = "Documentation & developer"
+url = "https://dev.to"
+smoke_test = "Verify feed articles, reaction icons, comment threads, and tag filtering"
+priority = "1.0"
+
+[[sites]]
+id = "servo-org"
+name = "Servo"
+category = "Documentation & developer"
+url = "https://servo.org"
+smoke_test = "Verify blog posts, engine embedder guide links, release announcements, and footer"
+priority = "Alpha"
+
+[[sites]]
+id = "duckduckgo"
+name = "DuckDuckGo"
+category = "Search & portals"
+url = "https://duckduckgo.com"
+smoke_test = "Verify instant search input, autocomplete suggestions, query execution, and privacy badges"
+priority = "Alpha"
+
+[[sites]]
+id = "google-search"
+name = "Google Search"
+category = "Search & portals"
+url = "https://www.google.com"
+smoke_test = "Verify clean landing search box, search results page, keyboard navigation, and pagination"
+priority = "Alpha"
+
+[[sites]]
+id = "wikipedia"
+name = "Wikipedia"
+category = "Search & portals"
+url = "https://www.wikipedia.org"
+smoke_test = "Verify portal language wheel, search input, article redirect, TOC, and typography"
+priority = "Alpha"
+
+[[sites]]
+id = "bing"
+name = "Microsoft Bing"
+category = "Search & portals"
+url = "https://www.bing.com"
+smoke_test = "Verify daily background image, search input box, trending news widget, and search results"
+priority = "1.0"
+
+[[sites]]
+id = "yahoo"
+name = "Yahoo"
+category = "Search & portals"
+url = "https://www.yahoo.com"
+smoke_test = "Verify portal news feed, weather card, search bar, and finance ticker layout"
+priority = "1.0"
+
+[[sites]]
+id = "baidu"
+name = "Baidu"
+category = "Search & portals"
+url = "https://www.baidu.com"
+smoke_test = "Verify simplified search input, Chinese font rendering, results page, and hot search list"
+priority = "1.0"
+
+[[sites]]
+id = "hackernews"
+name = "Hacker News"
+category = "News & reading"
+url = "https://news.ycombinator.com"
+smoke_test = "Verify table layout, vote links, comment tree collapse, user profiles, and submission link"
+priority = "Alpha"
+
+[[sites]]
+id = "kompas"
+name = "Kompas.com"
+category = "News & reading"
+url = "https://www.kompas.com"
+smoke_test = "Verify headline grid, article typography, ad container placeholders, and pagination"
+priority = "Alpha"
+
+[[sites]]
+id = "detik"
+name = "Detikcom"
+category = "News & reading"
+url = "https://www.detik.com"
+smoke_test = "Verify portal breaking news, multimedia carousel, category tabs, and article reader"
+priority = "Alpha"
+
+[[sites]]
+id = "bbc"
+name = "BBC News"
+category = "News & reading"
+url = "https://www.bbc.com/news"
+smoke_test = "Verify top stories layout, live coverage banner, category tabs, and video previews"
+priority = "1.0"
+
+[[sites]]
+id = "reuters"
+name = "Reuters"
+category = "News & reading"
+url = "https://www.reuters.com"
+smoke_test = "Verify market data ticker, breaking news alerts, wire reports, and paywall overlays"
+priority = "1.0"
+
+[[sites]]
+id = "theverge"
+name = "The Verge"
+category = "News & reading"
+url = "https://www.theverge.com"
+smoke_test = "Verify modern grid layout, review score pills, article comments, and dark/light mode"
+priority = "1.0"
+
+[[sites]]
+id = "arstechnica"
+name = "Ars Technica"
+category = "News & reading"
+url = "https://arstechnica.com"
+smoke_test = "Verify article feed, multi-page story navigation, forum link, and author bylines"
+priority = "1.0"
+
+[[sites]]
+id = "medium"
+name = "Medium"
+category = "News & reading"
+url = "https://medium.com"
+smoke_test = "Verify story cards, clap animations, reading list bookmarking, and typography"
+priority = "1.0"
+
+[[sites]]
+id = "youtube"
+name = "YouTube"
+category = "Video & media"
+url = "https://www.youtube.com"
+smoke_test = "Verify video grid load, channel avatars, video player container, and controls bar"
+priority = "Alpha"
+
+[[sites]]
+id = "twitch"
+name = "Twitch"
+category = "Video & media"
+url = "https://www.twitch.tv"
+smoke_test = "Verify live stream carousel, chat sidebar container, browse directory, and badges"
+priority = "1.0"
+
+[[sites]]
+id = "spotify"
+name = "Spotify Web Player"
+category = "Video & media"
+url = "https://open.spotify.com"
+smoke_test = "Verify web player shell, playlist sidebar, album art layout, and playback bar"
+priority = "1.0"
+
+[[sites]]
+id = "soundcloud"
+name = "SoundCloud"
+category = "Video & media"
+url = "https://soundcloud.com"
+smoke_test = "Verify waveform player element, stream feed, audio track cards, and search"
+priority = "1.0"
+
+[[sites]]
+id = "vimeo"
+name = "Vimeo"
+category = "Video & media"
+url = "https://vimeo.com"
+smoke_test = "Verify video showcase hero, video embed container, playback controls, and login CTA"
+priority = "1.0"
+
+[[sites]]
+id = "netflix"
+name = "Netflix"
+category = "Video & media"
+url = "https://www.netflix.com"
+smoke_test = "Verify landing hero, email sign-up form, FAQ accordion toggle, and localization selector"
+priority = "1.0"
+
+[[sites]]
+id = "gmail"
+name = "Gmail"
+category = "Productivity"
+url = "https://mail.google.com"
+smoke_test = "Verify authentication redirect, webmail shell, message list table, and action bar"
+priority = "Alpha"
+
+[[sites]]
+id = "google-docs"
+name = "Google Docs"
+category = "Productivity"
+url = "https://docs.google.com"
+smoke_test = "Verify document hub template gallery, recent document list, and editor shell loading"
+priority = "Alpha"
+
+[[sites]]
+id = "notion"
+name = "Notion"
+category = "Productivity"
+url = "https://www.notion.so"
+smoke_test = "Verify landing marketing elements, sidebar workspace tree, canvas editor, and slash menu"
+priority = "Alpha"
+
+[[sites]]
+id = "figma"
+name = "Figma"
+category = "Productivity"
+url = "https://www.figma.com"
+smoke_test = "Verify marketing landing page, file browser UI, canvas WebGL viewport, and toolbar"
+priority = "1.0"
+
+[[sites]]
+id = "trello"
+name = "Trello"
+category = "Productivity"
+url = "https://trello.com"
+smoke_test = "Verify board list, card dragging UI, list creation column, and member avatars"
+priority = "1.0"
+
+[[sites]]
+id = "slack"
+name = "Slack"
+category = "Productivity"
+url = "https://slack.com"
+smoke_test = "Verify workspace sign-in, channel message stream, emoji reactions, and thread sidebar"
+priority = "1.0"
+
+[[sites]]
+id = "google-calendar"
+name = "Google Calendar"
+category = "Productivity"
+url = "https://calendar.google.com"
+smoke_test = "Verify month/week grid, event creation dialog, mini date picker, and timezone display"
+priority = "1.0"
+
+[[sites]]
+id = "linear"
+name = "Linear"
+category = "Productivity"
+url = "https://linear.app"
+smoke_test = "Verify issue board, keyboard shortcuts command palette, dark mode theme, and filters"
+priority = "1.0"
+
+[[sites]]
+id = "tokopedia"
+name = "Tokopedia"
+category = "Shopping & local services"
+url = "https://www.tokopedia.com"
+smoke_test = "Verify banner carousel, flash sale countdown, category chips, and product cards"
+priority = "Alpha"
+
+[[sites]]
+id = "shopee"
+name = "Shopee"
+category = "Shopping & local services"
+url = "https://shopee.co.id"
+smoke_test = "Verify home vouchers banner, product feed grid, search filter, and shopping cart icon"
+priority = "Alpha"
+
+[[sites]]
+id = "gojek"
+name = "Gojek"
+category = "Shopping & local services"
+url = "https://www.gojek.com"
+smoke_test = "Verify service icon grid (GoRide, GoFood), language selector, and promotional promos"
+priority = "Alpha"
+
+[[sites]]
+id = "amazon"
+name = "Amazon"
+category = "Shopping & local services"
+url = "https://www.amazon.com"
+smoke_test = "Verify multi-department dropdown, search bar, product carousel, and cart preview"
+priority = "1.0"
+
+[[sites]]
+id = "ebay"
+name = "eBay"
+category = "Shopping & local services"
+url = "https://www.ebay.com"
+smoke_test = "Verify auction listings, category taxonomy, search refinement sidebar, and bids button"
+priority = "1.0"
+
+[[sites]]
+id = "traveloka"
+name = "Traveloka"
+category = "Shopping & local services"
+url = "https://www.traveloka.com"
+smoke_test = "Verify flight/hotel search booking widget, date range picker, and localized currency"
+priority = "1.0"
+
+[[sites]]
+id = "x"
+name = "X"
+category = "Social"
+url = "https://x.com"
+smoke_test = "Verify timeline timeline stream, sidebar navigation, compose box, and trending panel"
+priority = "Alpha"
+
+[[sites]]
+id = "reddit"
+name = "Reddit"
+category = "Social"
+url = "https://www.reddit.com"
+smoke_test = "Verify subreddit feed, post upvote/downvote, comment hierarchy, and sort dropdown"
+priority = "Alpha"
+
+[[sites]]
+id = "linkedin"
+name = "LinkedIn"
+category = "Social"
+url = "https://www.linkedin.com"
+smoke_test = "Verify professional feed, profile card, messaging overlay, and connection buttons"
+priority = "1.0"
+
+[[sites]]
+id = "discord"
+name = "Discord"
+category = "Social"
+url = "https://discord.com"
+smoke_test = "Verify web app CTA, marketing hero, server feature showcase, and Nitro purchase modal"
+priority = "1.0"

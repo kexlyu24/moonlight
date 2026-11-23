@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Vimium",
+  "version": "2.1.2",
+  "description": "The Hacker's Browser. Provides keyboard shortcuts for navigation and control in the spirit of Vim",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "vimium.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

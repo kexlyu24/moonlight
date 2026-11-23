@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "vimium"
+name = "Vimium"
+category = "Keyboard navigation"
+target = "Alpha"
+version = "2.1.2"
+api_scope = ["storage", "tabs", "runtime"]
+scenario = "Install package, open HTML fixture page, press 'f' link hint key, verify hint letters overlaid on links"

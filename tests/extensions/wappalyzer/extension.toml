@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "wappalyzer"
+name = "Wappalyzer"
+category = "Developer"
+target = "1.0"
+version = "6.10.74"
+api_scope = ["storage", "tabs", "webNavigation", "action", "runtime"]
+scenario = "Install package, navigate to tech stack fixture page, open popup, verify detected frameworks and servers"

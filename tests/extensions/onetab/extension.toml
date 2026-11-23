@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "onetab"
+name = "OneTab"
+category = "Tab management"
+target = "Alpha"
+version = "1.84.0"
+api_scope = ["storage", "tabs", "action", "runtime"]
+scenario = "Install package, click OneTab action icon with multiple open tabs, verify tabs grouped into list view page"

@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "return-youtube-dislike"
+name = "Return YouTube Dislike"
+category = "Media"
+target = "1.0"
+version = "3.0.0.12"
+api_scope = ["storage", "runtime"]
+scenario = "Install package, open YouTube video player fixture, verify dislike count element populated from mock API"

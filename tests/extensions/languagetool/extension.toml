@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "languagetool"
+name = "LanguageTool"
+category = "Writing"
+target = "1.0"
+version = "8.8.4"
+api_scope = ["storage", "alarms", "tabs", "contextMenus", "action", "runtime"]
+scenario = "Install package, open writing canvas, enter text with grammatical flaws, verify correction popover"

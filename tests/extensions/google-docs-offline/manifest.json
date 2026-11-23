@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Google Docs Offline",
+  "version": "1.88.0",
+  "description": "Edit, create, and view your documents, spreadsheets, and presentations without internet access",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "alarms",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://docs.google.com/*",
+    "https://drive.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

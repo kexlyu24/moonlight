@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "momentum"
+name = "Momentum"
+category = "New Tab replacement"
+target = "1.0"
+version = "2.14.3"
+api_scope = ["storage", "alarms", "topSites", "runtime"]
+scenario = "Install package, trigger new tab navigation, verify custom dashboard loaded with greeting and focus goal input"

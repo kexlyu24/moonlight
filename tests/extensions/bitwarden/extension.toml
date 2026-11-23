@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "bitwarden"
+name = "Bitwarden"
+category = "Password manager"
+target = "1.0"
+version = "2026.10.0"
+api_scope = ["storage", "alarms", "tabs", "idle", "action", "runtime"]
+scenario = "Install package, unlock local test vault, open login fixture page, verify autofill icon and credential injection"

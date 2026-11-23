@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Bitwarden",
+  "version": "2026.10.0",
+  "description": "A secure and free password manager for all of your devices",
+  "permissions": [
+    "storage",
+    "alarms",
+    "tabs",
+    "unlimitedStorage",
+    "idle"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "autofill.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

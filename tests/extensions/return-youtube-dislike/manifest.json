@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Return YouTube Dislike",
+  "version": "3.0.0.12",
+  "description": "Returns ability to see dislikes on YouTube",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://*.youtube.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*"
+      ],
+      "js": [
+        "ryd.js"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "tampermonkey"
+name = "Tampermonkey"
+category = "Userscripts"
+target = "Post-1.0"
+version = "5.3.6212"
+api_scope = ["storage", "tabs", "webRequest", "webNavigation", "userScripts", "action", "runtime"]
+scenario = "Install package, register test userscript via UI, navigate to matched URL, verify script DOM modifications"

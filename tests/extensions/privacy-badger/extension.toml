@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "privacy-badger"
+name = "Privacy Badger"
+category = "Privacy"
+target = "Alpha"
+version = "2026.9.15"
+api_scope = ["declarativeNetRequest", "storage", "alarms", "webNavigation", "action", "runtime"]
+scenario = "Install package, load tracking demo fixture, inspect popup tracker count, verify blocked third-party domains"

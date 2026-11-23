@@ -4139,6 +4139,8 @@ name = "ml-ext"
 version = "0.1.0"
 dependencies = [
  "ml-engine",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

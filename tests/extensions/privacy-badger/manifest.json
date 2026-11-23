@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Privacy Badger",
+  "version": "2026.9.15",
+  "description": "Automatically learns to block invisible trackers",
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "alarms",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

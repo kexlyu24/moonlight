@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "uBlock Origin Lite",
+  "version": "2026.11.1",
+  "description": "Permission-less, content-blocking extension using declarativeNetRequest",
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "alarms",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

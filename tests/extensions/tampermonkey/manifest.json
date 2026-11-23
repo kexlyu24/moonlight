@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Tampermonkey",
+  "version": "5.3.6212",
+  "description": "The world's most popular userscript manager",
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "webRequest",
+    "webNavigation",
+    "tabs",
+    "notifications",
+    "userScripts"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

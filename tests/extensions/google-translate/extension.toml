@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "google-translate"
+name = "Google Translate"
+category = "Translation"
+target = "Alpha"
+version = "2.0.14"
+api_scope = ["storage", "contextMenus", "action", "runtime", "i18n"]
+scenario = "Install package, select text on test page, invoke translation popup, verify translated string returned"

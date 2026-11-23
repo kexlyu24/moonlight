@@ -1,0 +1,10 @@
+# Moonlight Test Extension Metadata
+# Spec: docs/03-chrome-extension-spec.md
+
+id = "ublock-origin-lite"
+name = "uBlock Origin Lite"
+category = "Content blocker"
+target = "Alpha"
+version = "2026.11.1"
+api_scope = ["declarativeNetRequest", "storage", "alarms", "scripting", "action", "runtime"]
+scenario = "Install package, open popup, adjust filtering level slider, verify network requests blocked on local fixture page"

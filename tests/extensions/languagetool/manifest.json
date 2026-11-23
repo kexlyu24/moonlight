@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "LanguageTool",
+  "version": "8.8.4",
+  "description": "Grammar and style checker for English and 30+ other languages",
+  "permissions": [
+    "storage",
+    "alarms",
+    "tabs",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://*.languagetool.org/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}
