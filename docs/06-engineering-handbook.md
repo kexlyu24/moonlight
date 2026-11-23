@@ -83,7 +83,7 @@ Moonlight is tested in five layers; the last two (real sites and real extensions
 Goal of the first steps: a live repo, green CI, and one Moonlight window showing a web page through Servo.
 
 - [ ] Create the `moonlight` repo (README, LICENSE MPL-2.0, CODE_OF_CONDUCT, SECURITY.md, all in English)
-- [ ] Write `AGENTS.md` at the repo root with project conventions for every AI session
+- [x] Write `AGENTS.md` at the repo root with project conventions for every AI session
 - [ ] Create the Cargo workspace following the structure in the [Technical Architecture](02-technical-architecture.md), empty crates with `lib.rs`
 - [ ] Pin the Rust version in `rust-toolchain.toml` and the `servo` version in `Cargo.toml`
 - [ ] CI: fmt, clippy, deny, nextest on Windows

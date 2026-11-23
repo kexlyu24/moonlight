@@ -160,7 +160,7 @@ All extension permissions are enforced in Rust, not in the JS shim, because a pa
 **Security principles**
 
 - Every `chrome.*` call carries an extension ID filled in on the Rust side; permissions and host permissions are checked before execution.
-- Content scripts must not run in the page's main world while hook H4 (isolated world) is missing; extensions that need content scripts are labeled Partial until H4 exists.
+- Hook H4 (isolated world) is a hard requirement to close F2. During F2 development, main-world injection may exist only behind an explicit developer flag for testing; it must never be enabled in an Alpha release. Content scripts must not run in the page's main world in production; extensions that need content scripts are labeled Partial until H4 exists.
 - `moonlight://` pages can only call internal APIs through an allowlist; normal web pages cannot call them.
 - .crx packages are verified (CRX3 signature, ID derived from the public key) before unpacking; unpacking rejects path traversal (`../`).
 - App updates are signed with Ed25519; the private key lives in an HSM or a CI secret, never in the repo.

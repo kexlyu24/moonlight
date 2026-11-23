@@ -27,7 +27,7 @@ A phase only closes when its exit criteria are met; if not, the phase continues 
 | --- | --- | --- |
 | **F0 — Foundation & spike** | Repo + Windows CI (F0–F2 are Windows only); Servo prototype with 1 WebView; list of 50 test sites + 20 test extensions; RAM/startup benchmarks; ADR-001 validation | ADR-001 criteria measured and met; hooks H1–H8 rated present / addable / blocker |
 | **F1 — Shell MVP** | Tabs, omnibox, navigation, New Tab, basic Settings, history, bookmarks, downloads, error pages, built-in tracker blocker | Nightly 0.1 usable for light daily browsing; New Tab RAM ≤ 150 MB |
-| **F2 — Extension runtime v1** | Manifest, CRX3, install from CWS/.crx/unpacked, permission dialog, action + popup, Alpha APIs from the matrix, shield, compatibility banner | Public Alpha 0.2; the 7 Alpha-target test extensions work; fuzzing manifest/CRX/DNR for 24 hours without a crash |
+| **F2 — Extension runtime v1** | Manifest, CRX3, install from CWS/.crx/unpacked, permission dialog, action + popup, Alpha APIs from the matrix, shield, compatibility banner | Public Alpha 0.2; the 7 Alpha-target test extensions work; hook H4 (isolated world) available; fuzzing manifest/CRX/DNR for 24 hours without a crash |
 | **F3 — Daily driver** | 1.0-phase APIs, private window, session restore, site permissions, DevTools, print/PDF, import, auto-update, Linux and macOS support | Beta 0.5; ≥ 12 of 20 test extensions work; ≥ 80% of test sites pass |
 | **F4 — Hardening & 1.0** | Separate content processes, external security audit, accessibility audit, performance work | Every success metric in the PRD is met; no open critical security bugs |
 

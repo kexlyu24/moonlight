@@ -191,6 +191,8 @@ Security and privacy have the strictest bar; performance targets are hypotheses 
 | NFR-14 | Size | Installer | ≤ 120 MB |
 | NFR-15 | Localization | All UI strings go through Fluent files (en-US) | 0 hard-coded strings |
 
+RAM gates: 150 MB for 1 New Tab is the relaxed gate for the F0/F1 prototype; 120 MB (NFR-02) and 180 MB with 4 extensions are the 1.0 targets; the 96 MB in the mockup is only an illustration.
+
 ## Assumptions, risks, and decisions
 
 The biggest risk is the engine's web compatibility; the whole plan depends on the results of the Phase 0 spike.
