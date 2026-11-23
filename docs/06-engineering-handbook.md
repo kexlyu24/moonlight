@@ -84,8 +84,8 @@ Goal of the first steps: a live repo, green CI, and one Moonlight window showing
 
 - [x] Create the `moonlight` repo (README, LICENSE MPL-2.0, CODE_OF_CONDUCT, SECURITY.md, all in English)
 - [x] Write `AGENTS.md` at the repo root with project conventions for every AI session
-- [ ] Create the Cargo workspace following the structure in the [Technical Architecture](02-technical-architecture.md), empty crates with `lib.rs`
-- [ ] Pin the Rust version in `rust-toolchain.toml` and the `servo` version in `Cargo.toml`
+- [x] Create the Cargo workspace following the structure in the [Technical Architecture](02-technical-architecture.md), empty crates with `lib.rs`
+- [x] Pin the Rust version in `rust-toolchain.toml` and the `servo` version in `Cargo.toml`
 - [ ] CI: fmt, clippy, deny, nextest on Windows
 - [ ] Prototype: a `winit` window + one Servo `WebView` loading a URL from a CLI argument
 - [ ] Add the simplest `egui` omnibox + back/forward/reload

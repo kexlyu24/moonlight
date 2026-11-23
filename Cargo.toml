@@ -1,0 +1,54 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/moonlight",
+    "crates/ml-shell",
+    "crates/ml-engine",
+    "crates/ml-engine-servo",
+    "crates/ml-net",
+    "crates/ml-ext",
+    "crates/ml-ext-api",
+    "crates/ml-storage",
+    "crates/ml-pages",
+    "crates/ml-i18n",
+    "crates/ml-update",
+    "xtask",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Moonlight Authors"]
+license = "MPL-2.0"
+repository = "https://github.com/kexlyu24/moonlight"
+
+[workspace.lints.cargo]
+unused_dependencies = "allow"
+unused_workspace_dependencies = "allow"
+unused_workspace_package_fields = "allow"
+
+[workspace.dependencies]
+# Rendering engine (only crates/ml-engine-servo may depend on this)
+servo = "0.1.0"
+
+# Async & serialization
+tokio = { version = "1.40", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+url = "2.5"
+
+# Internal workspace crates
+ml-shell = { path = "crates/ml-shell" }
+ml-engine = { path = "crates/ml-engine" }
+ml-engine-servo = { path = "crates/ml-engine-servo" }
+ml-net = { path = "crates/ml-net" }
+ml-ext = { path = "crates/ml-ext" }
+ml-ext-api = { path = "crates/ml-ext-api" }
+ml-storage = { path = "crates/ml-storage" }
+ml-pages = { path = "crates/ml-pages" }
+ml-i18n = { path = "crates/ml-i18n" }
+ml-update = { path = "crates/ml-update" }

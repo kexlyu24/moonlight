@@ -1,0 +1,15 @@
+[package]
+name = "ml-engine-servo"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+ml-engine.workspace = true
+servo.workspace = true
+url.workspace = true
+
+[lints]
+workspace = true
+
