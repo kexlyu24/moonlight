@@ -4180,6 +4180,10 @@ dependencies = [
 [[package]]
 name = "ml-pages"
 version = "0.1.0"
+dependencies = [
+ "ml-i18n",
+ "url",
+]
 
 [[package]]
 name = "ml-shell"
@@ -4191,6 +4195,7 @@ dependencies = [
  "glow",
  "ml-engine",
  "ml-i18n",
+ "ml-pages",
  "raw-window-handle",
  "tracing",
  "url",

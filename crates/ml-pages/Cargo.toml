@@ -6,6 +6,8 @@ license.workspace = true
 authors.workspace = true
 
 [dependencies]
+ml-i18n.workspace = true
+url.workspace = true
 
 [lints]
 workspace = true

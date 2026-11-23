@@ -54,6 +54,20 @@ pub fn resolve_omnibox_input(input: &str) -> Option<Url> {
     }
 }
 
+/// Helper to load a URL into the engine backend, resolving internal moonlight:// pages.
+pub fn load_url_with_internal_pages<B: EngineBackend>(
+    backend: &mut B,
+    url: &Url,
+) -> Result<(), ml_engine::EngineError> {
+    if let Some(page) = ml_pages::parse_internal_url(url) {
+        let resp = ml_pages::render_internal_page(&page);
+        if let Some(data_url) = ml_pages::to_data_url(&resp) {
+            return backend.load_url(&data_url);
+        }
+    }
+    backend.load_url(url)
+}
+
 /// The state of the browser application window.
 pub struct BrowserApp<B: EngineBackend> {
     backend: B,
@@ -113,7 +127,7 @@ impl<B: EngineBackend> BrowserApp<B> {
         if let Some(url) = resolve_omnibox_input(input) {
             self.omnibox_text = url.to_string();
             self.tab_manager.update_active_url(url.clone());
-            if let Err(e) = self.backend.load_url(&url) {
+            if let Err(e) = load_url_with_internal_pages(&mut self.backend, &url) {
                 warn!("failed to navigate: {e:?}");
             }
         }
@@ -171,7 +185,7 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
         let scale = window.scale_factor();
         let waker = Box::new(WinitWaker(self.proxy.clone()));
 
-        if let Err(e) = self.backend.load_url(&self.initial_url) {
+        if let Err(e) = load_url_with_internal_pages(&mut self.backend, &self.initial_url) {
             warn!("failed to load initial url: {e:?}");
         }
 
@@ -391,10 +405,12 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                     });
 
                     if new_tab_requested {
-                        if let Ok(new_url) = Url::parse("https://duckduckgo.com/") {
+                        if let Ok(new_url) = Url::parse("moonlight://newtab") {
                             let _new_id = self.tab_manager.open_tab(new_url.clone());
                             self.omnibox_text = new_url.to_string();
-                            if let Err(e) = self.backend.load_url(&new_url) {
+                            if let Err(e) =
+                                load_url_with_internal_pages(&mut self.backend, &new_url)
+                            {
                                 warn!("failed to navigate on new tab: {e:?}");
                             }
                             window.request_redraw();
@@ -405,7 +421,9 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                         if self.tab_manager.select_tab(id) {
                             if let Some(tab) = self.tab_manager.active_tab() {
                                 self.omnibox_text = tab.url.to_string();
-                                if let Err(e) = self.backend.load_url(&tab.url) {
+                                if let Err(e) =
+                                    load_url_with_internal_pages(&mut self.backend, &tab.url)
+                                {
                                     warn!("failed to switch tab url: {e:?}");
                                 }
                             }
@@ -418,7 +436,9 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                             CloseTabResult::Closed { .. } => {
                                 if let Some(tab) = self.tab_manager.active_tab() {
                                     self.omnibox_text = tab.url.to_string();
-                                    if let Err(e) = self.backend.load_url(&tab.url) {
+                                    if let Err(e) =
+                                        load_url_with_internal_pages(&mut self.backend, &tab.url)
+                                    {
                                         warn!("failed to load adjacent tab url: {e:?}");
                                     }
                                 }
@@ -436,7 +456,7 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                         if let Some(url) = resolve_omnibox_input(&target) {
                             self.omnibox_text = url.to_string();
                             self.tab_manager.update_active_url(url.clone());
-                            if let Err(e) = self.backend.load_url(&url) {
+                            if let Err(e) = load_url_with_internal_pages(&mut self.backend, &url) {
                                 warn!("failed to navigate from omnibox: {e:?}");
                             }
                         }
@@ -546,5 +566,57 @@ mod tests {
 
         manager.update_active_url(Url::parse("https://docs.rs/").unwrap());
         assert_eq!(manager.active_tab().unwrap().title, "docs.rs");
+    }
+
+    #[test]
+    fn test_resolve_omnibox_internal_schemes() {
+        let newtab = resolve_omnibox_input("moonlight://newtab").expect("must resolve");
+        assert_eq!(newtab.as_str(), "moonlight://newtab");
+
+        let settings = resolve_omnibox_input("moonlight://settings").expect("must resolve");
+        assert_eq!(settings.as_str(), "moonlight://settings");
+    }
+
+    struct MockTestBackend {
+        loaded_url: Option<Url>,
+    }
+
+    impl EngineBackend for MockTestBackend {
+        fn attach_window(
+            &mut self,
+            _d: raw_window_handle::DisplayHandle<'_>,
+            _w: raw_window_handle::WindowHandle<'_>,
+            _width: u32,
+            _height: u32,
+            _scale: f64,
+            _waker: Box<dyn ml_engine::HostEventLoopWaker>,
+        ) -> Result<(), ml_engine::EngineError> {
+            Ok(())
+        }
+        fn load_url(&mut self, url: &Url) -> Result<(), ml_engine::EngineError> {
+            self.loaded_url = Some(url.clone());
+            Ok(())
+        }
+        fn go_back(&mut self) {}
+        fn go_forward(&mut self) {}
+        fn reload(&mut self) {}
+        fn current_url(&self) -> Option<Url> {
+            self.loaded_url.clone()
+        }
+        fn resize(&mut self, _w: u32, _h: u32) {}
+        fn paint(&mut self) {}
+        fn present(&mut self) {}
+        fn spin_event_loop(&mut self) {}
+    }
+
+    #[test]
+    fn test_load_url_with_internal_pages() {
+        let mut backend = MockTestBackend { loaded_url: None };
+        let newtab = Url::parse("moonlight://newtab").unwrap();
+        assert!(load_url_with_internal_pages(&mut backend, &newtab).is_ok());
+
+        let loaded = backend.loaded_url.expect("must load a URL");
+        assert_eq!(loaded.scheme(), "data");
+        assert!(loaded.as_str().contains("data:text/html;charset=utf-8,"));
     }
 }

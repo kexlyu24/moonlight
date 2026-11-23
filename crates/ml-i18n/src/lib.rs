@@ -13,6 +13,20 @@ omnibox-placeholder = Search DuckDuckGo or type a URL
 tab-new = New Tab
 tab-close = Close tab
 tab-default-title = New Tab
+newtab-title = New Tab
+newtab-search-placeholder = Search DuckDuckGo or type a URL
+newtab-shortcut-github = GitHub
+newtab-shortcut-docs = docs.rs
+newtab-shortcut-so = Stack Overflow
+newtab-shortcut-mdn = MDN Web Docs
+newtab-shortcut-add = Add shortcut
+newtab-stat-trackers = Trackers blocked
+newtab-stat-ram = RAM used
+newtab-stat-loadtime = Load time saved
+error-title = Unable to load page
+error-offline = Network offline or connection timed out
+error-cert = Security certificate invalid
+error-crash = Tab crashed unexpectedly
 "#;
 
 thread_local! {

@@ -7,6 +7,7 @@ authors.workspace = true
 
 [dependencies]
 ml-engine.workspace = true
+ml-pages.workspace = true
 ml-i18n.workspace = true
 winit.workspace = true
 raw-window-handle.workspace = true

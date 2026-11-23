@@ -27,12 +27,29 @@ impl Tab {
     }
 
     pub fn derive_title_from_url(url: &Url) -> String {
-        match url.host_str() {
-            Some(host) => host.to_string(),
-            None => match url.scheme() {
-                "about" => "New Tab".to_string(),
-                "moonlight" => format!("Moonlight: {}", url.path().trim_start_matches('/')),
-                _ => ml_i18n::text("tab-default-title"),
+        match url.scheme() {
+            "moonlight" => {
+                let page = url.host_str().unwrap_or(url.path().trim_start_matches('/'));
+                match page {
+                    "newtab" => ml_i18n::text("newtab-title"),
+                    "settings" => "Settings".to_string(),
+                    "extensions" => "Extensions".to_string(),
+                    "history" => "History".to_string(),
+                    "bookmarks" => "Bookmarks".to_string(),
+                    "downloads" => "Downloads".to_string(),
+                    other => format!("Moonlight: {other}"),
+                }
+            }
+            "about" => {
+                if url.path() == "newtab" {
+                    ml_i18n::text("newtab-title")
+                } else {
+                    ml_i18n::text("tab-default-title")
+                }
+            }
+            _ => match url.host_str() {
+                Some(host) => host.to_string(),
+                None => ml_i18n::text("tab-default-title"),
             },
         }
     }
