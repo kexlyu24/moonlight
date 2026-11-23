@@ -133,46 +133,236 @@ pub fn to_data_url(response: &InternalPageResponse) -> Option<Url> {
 const NEWTAB_HTML: &str = r##"<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><title>New Tab</title>
+  <meta charset="utf-8">
+  <title>New Tab</title>
   <style>
-    :root { --bg: #0E1117; --s1: #161A23; --s2: #262C3D; --si: #2C3343; --st: #262B38; --b: #2A3142; --fg: #E6E9F2; --muted: #94A3B8; --moon: #C7A6FF; --accent: #8FB3FF; }
+    :root {
+      --bg: #0E1117;
+      --s1: #161A23;
+      --s2: #262C3D;
+      --si: #2C3343;
+      --st: #262B38;
+      --b: #2A3142;
+      --fg: #E6E9F2;
+      --muted: #94A3B8;
+      --moon: #C7A6FF;
+      --accent: #8FB3FF;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--fg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
     a { color: inherit; text-decoration: none; }
-    .glow { position: absolute; top: -100px; width: 600px; height: 300px; background: radial-gradient(circle, #252E47 0%, rgba(14,17,23,0) 70%); pointer-events: none; }
-    .wrap { position: relative; width: 100%; max-width: 680px; padding: 80px 20px 40px; display: flex; flex-direction: column; align-items: center; }
-    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; font-size: 26px; font-weight: 600; }
-    .brand svg { width: 36px; height: 36px; fill: var(--moon); }
-    .search-box { width: 100%; background: var(--si); border: 1px solid var(--b); border-radius: 9999px; padding: 12px 20px; display: flex; align-items: center; gap: 12px; }
-    .search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(143,179,255,0.2); }
-    .search-box input { width: 100%; background: transparent; border: none; outline: none; color: var(--fg); font-size: 15px; }
-    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; width: 100%; margin-top: 40px; }
-    .card { background: var(--st); border: 1px solid var(--b); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: 12px; font-weight: 500; }
-    .card:hover { transform: translateY(-2px); border-color: var(--accent); }
-    .stats { margin-top: 48px; width: 100%; background: var(--s1); border: 1px solid var(--b); border-radius: 12px; padding: 16px 20px; display: flex; justify-content: space-around; text-align: center; }
-    .stat-val { font-size: 18px; font-weight: 700; color: var(--accent); }
-    .stat-lbl { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .glow {
+      position: absolute;
+      top: -120px;
+      width: 700px;
+      height: 340px;
+      background: radial-gradient(circle at 50% 30%, #252E47 0%, rgba(14, 17, 23, 0) 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 620px;
+      padding: 60px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .brand svg {
+      width: 40px;
+      height: 40px;
+      filter: drop-shadow(0 0 16px rgba(199, 166, 255, 0.45));
+    }
+    .brand-name {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--fg);
+    }
+    .search-form {
+      width: 100%;
+      max-width: 580px;
+      margin-bottom: 36px;
+    }
+    .search-box {
+      width: 100%;
+      height: 48px;
+      background: var(--si);
+      border: 1px solid var(--b);
+      border-radius: 9999px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+    }
+    .search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(143, 179, 255, 0.25);
+    }
+    .search-box input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--fg);
+      font-size: 15px;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .shortcuts {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+      margin-bottom: 44px;
+    }
+    .shortcut-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 76px;
+      text-align: center;
+    }
+    .shortcut-tile {
+      width: 68px;
+      height: 68px;
+      background: var(--st);
+      border: 1px solid var(--b);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .shortcut-tile:hover {
+      background: #2F3646;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .shortcut-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--fg);
+      margin-top: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 76px;
+    }
+    .stats-card {
+      width: 100%;
+      max-width: 580px;
+      background: var(--s1);
+      border: 1px solid var(--b);
+      border-radius: 14px;
+      padding: 18px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      text-align: center;
+      position: relative;
+    }
+    .stat-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+    }
+    .stat-col:not(:last-child) {
+      border-right: 1px solid var(--b);
+    }
+    .stat-val {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--fg);
+      letter-spacing: -0.01em;
+    }
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+    .privacy-notice {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #64748B;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="glow"></div>
   <div class="wrap">
-    <div class="brand"><svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 1 0 22 12A10 10 0 0 1 12 2Z"/></svg><span>Moonlight</span></div>
-    <form class="search-box" action="https://duckduckgo.com/" method="GET">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input type="text" name="q" placeholder="__SEARCH_PLACEHOLDER__" autofocus autocomplete="off" />
+    <div class="brand">
+      <svg viewBox="0 0 24 24"><path fill="#C7A6FF" d="M12.3 2a10 10 0 0 0-1.9 19.8 10 10 0 1 1 10.2-12 10 10 0 0 0-8.3-7.8z"/></svg>
+      <span class="brand-name">Moonlight</span>
+    </div>
+
+    <form class="search-form" action="https://duckduckgo.com/" method="GET">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" name="q" placeholder="__SEARCH_PLACEHOLDER__" autofocus autocomplete="off" />
+      </div>
     </form>
-    <div class="grid">
-      <a class="card" href="https://github.com/"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg><span>__GH_LABEL__</span></a>
-      <a class="card" href="https://docs.rs/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg><span>__DOCS_LABEL__</span></a>
-      <a class="card" href="https://stackoverflow.com/"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.986 21.865v-6.408h2.134V24H3v-8.543h2.134v6.408h13.852zM6.111 19.731h11.72v-2.134H6.111v2.134zm.6-4.606l11.458 2.443.498-2.077-11.458-2.443-.498 2.077zm1.884-4.832l10.378 5.626.996-1.89-10.378-5.626-.996 1.89zm3.565-4.993l8.47 8.167 1.494-1.55-8.47-8.167-1.494 1.55zM15.426 1l-1.89 1.002 6.012 10.155 1.89-1.002L15.426 1z"/></svg><span>__SO_LABEL__</span></a>
-      <a class="card" href="https://developer.mozilla.org/"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg><span>__MDN_LABEL__</span></a>
+
+    <div class="shortcuts">
+      <a class="shortcut-item" href="https://github.com/">
+        <div class="shortcut-tile"><svg width="28" height="28" viewBox="0 0 24 24" fill="#E6E9F2"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg></div>
+        <span class="shortcut-label">__GH_LABEL__</span>
+      </a>
+      <a class="shortcut-item" href="https://docs.rs/">
+        <div class="shortcut-tile"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E6E9F2" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg></div>
+        <span class="shortcut-label">__DOCS_LABEL__</span>
+      </a>
+      <a class="shortcut-item" href="https://stackoverflow.com/">
+        <div class="shortcut-tile"><svg width="28" height="28" viewBox="0 0 24 24" fill="#F48225"><path d="M18.986 21.865v-6.408h2.134V24H3v-8.543h2.134v6.408h13.852zM6.111 19.731h11.72v-2.134H6.111v2.134zm.6-4.606l11.458 2.443.498-2.077-11.458-2.443-.498 2.077zm1.884-4.832l10.378 5.626.996-1.89-10.378-5.626-.996 1.89zm3.565-4.993l8.47 8.167 1.494-1.55-8.47-8.167-1.494 1.55zM15.426 1l-1.89 1.002 6.012 10.155 1.89-1.002L15.426 1z"/></svg></div>
+        <span class="shortcut-label">__SO_LABEL__</span>
+      </a>
+      <a class="shortcut-item" href="https://developer.mozilla.org/">
+        <div class="shortcut-tile"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8FB3FF" stroke-width="2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg></div>
+        <span class="shortcut-label">__MDN_LABEL__</span>
+      </a>
+      <a class="shortcut-item" href="javascript:void(0)">
+        <div class="shortcut-tile" style="border-style: dashed;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <span class="shortcut-label">__ADD_LABEL__</span>
+      </a>
     </div>
-    <div class="stats">
-      <div><div class="stat-val">0</div><div class="stat-lbl">__STAT_TRACKERS__</div></div>
-      <div><div class="stat-val">34 MB</div><div class="stat-lbl">__STAT_RAM__</div></div>
-      <div><div class="stat-val">0.4s</div><div class="stat-lbl">__STAT_LOADTIME__</div></div>
+
+    <div class="stats-card">
+      <div class="stat-col">
+        <div class="stat-val">1,428</div>
+        <div class="stat-lbl">__STAT_TRACKERS__</div>
+      </div>
+      <div class="stat-col">
+        <div class="stat-val">96 MB</div>
+        <div class="stat-lbl">__STAT_RAM__</div>
+      </div>
+      <div class="stat-col">
+        <div class="stat-val">~14.2s</div>
+        <div class="stat-lbl">__STAT_LOADTIME__</div>
+      </div>
     </div>
+    <div class="privacy-notice">__PRIVACY_CAPTION__</div>
   </div>
 </body>
 </html>
@@ -188,9 +378,14 @@ fn render_newtab_html() -> String {
         .replace("__DOCS_LABEL__", &ml_i18n::text("newtab-shortcut-docs"))
         .replace("__SO_LABEL__", &ml_i18n::text("newtab-shortcut-so"))
         .replace("__MDN_LABEL__", &ml_i18n::text("newtab-shortcut-mdn"))
+        .replace("__ADD_LABEL__", &ml_i18n::text("newtab-shortcut-add"))
         .replace("__STAT_TRACKERS__", &ml_i18n::text("newtab-stat-trackers"))
         .replace("__STAT_RAM__", &ml_i18n::text("newtab-stat-ram"))
         .replace("__STAT_LOADTIME__", &ml_i18n::text("newtab-stat-loadtime"))
+        .replace(
+            "__PRIVACY_CAPTION__",
+            &ml_i18n::text("newtab-privacy-caption"),
+        )
 }
 
 fn render_placeholder_page(title: &str, description: &str) -> String {
@@ -247,7 +442,11 @@ mod tests {
         assert!(resp.body.contains("Search DuckDuckGo or type a URL"));
         assert!(resp.body.contains("GitHub"));
         assert!(resp.body.contains("docs.rs"));
-        assert!(resp.body.contains("34 MB"));
+        assert!(resp.body.contains("Stack Overflow"));
+        assert!(resp.body.contains("MDN Web Docs"));
+        assert!(resp.body.contains("1,428"));
+        assert!(resp.body.contains("96 MB"));
+        assert!(resp.body.contains("Zero telemetry transmitted"));
     }
 
     #[test]

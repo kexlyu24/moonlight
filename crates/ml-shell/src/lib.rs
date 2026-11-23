@@ -295,7 +295,7 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                                         let bg_color = if is_active {
                                             egui::Color32::from_rgb(0x26, 0x2C, 0x3D)
                                         } else {
-                                            egui::Color32::from_rgb(0x1D, 0x22, 0x30)
+                                            egui::Color32::from_rgb(0x16, 0x1A, 0x23)
                                         };
                                         let text_color = if is_active {
                                             egui::Color32::from_rgb(0xE6, 0xE9, 0xF2)
@@ -304,13 +304,30 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                                         };
 
                                         let display_title = tab.display_title(18);
+                                        let tab_icon = if tab.url.as_str().contains("newtab") {
+                                            "🌙"
+                                        } else {
+                                            "●"
+                                        };
 
                                         egui::Frame::default()
                                             .fill(bg_color)
-                                            .corner_radius(egui::CornerRadius::same(6))
-                                            .inner_margin(egui::Margin::symmetric(8, 3))
+                                            .corner_radius(egui::CornerRadius {
+                                                nw: 8,
+                                                ne: 8,
+                                                sw: 0,
+                                                se: 0,
+                                            })
+                                            .inner_margin(egui::Margin::symmetric(10, 4))
                                             .show(ui, |ui| {
                                                 ui.horizontal(|ui| {
+                                                    ui.label(
+                                                        egui::RichText::new(tab_icon)
+                                                            .size(10.0)
+                                                            .color(egui::Color32::from_rgb(
+                                                                0xC7, 0xA6, 0xFF,
+                                                            )),
+                                                    );
                                                     let title_text =
                                                         egui::RichText::new(&display_title)
                                                             .color(text_color)
@@ -362,7 +379,7 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                                 ui.horizontal(|ui| {
                                     ui.spacing_mut().item_spacing.x = 6.0;
 
-                                    let back_btn = ui.button("⬅");
+                                    let back_btn = ui.button("←");
                                     if back_btn
                                         .on_hover_text(ml_i18n::text("toolbar-back"))
                                         .clicked()
@@ -370,7 +387,7 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                                         self.backend.go_back();
                                     }
 
-                                    let forward_btn = ui.button("➡");
+                                    let forward_btn = ui.button("→");
                                     if forward_btn
                                         .on_hover_text(ml_i18n::text("toolbar-forward"))
                                         .clicked()
@@ -386,20 +403,77 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                                         self.backend.reload();
                                     }
 
-                                    let omnibox_width = ui.available_width();
-                                    let text_edit =
-                                        egui::TextEdit::singleline(&mut self.omnibox_text)
-                                            .hint_text(ml_i18n::text("omnibox-placeholder"))
-                                            .text_color(egui::Color32::from_rgb(0xE6, 0xE9, 0xF2));
+                                    let right_actions_width = 150.0;
+                                    let omnibox_width =
+                                        (ui.available_width() - right_actions_width).max(120.0);
 
-                                    let response = ui.add_sized([omnibox_width, 24.0], text_edit);
-                                    self.omnibox_focused = response.has_focus();
+                                    egui::Frame::default()
+                                        .fill(egui::Color32::from_rgb(0x16, 0x1A, 0x23))
+                                        .corner_radius(egui::CornerRadius::same(12))
+                                        .inner_margin(egui::Margin::symmetric(10, 4))
+                                        .show(ui, |ui| {
+                                            ui.horizontal(|ui| {
+                                                ui.spacing_mut().item_spacing.x = 6.0;
+                                                let is_newtab =
+                                                    self.omnibox_text == "moonlight://newtab";
+                                                let icon = if is_newtab { "🔍" } else { "🔒" };
+                                                ui.label(
+                                                    egui::RichText::new(icon).size(11.0).color(
+                                                        egui::Color32::from_rgb(0x94, 0xA3, 0xB8),
+                                                    ),
+                                                );
 
-                                    if (response.lost_focus() || response.has_focus())
-                                        && ui.input(|i| i.key_pressed(egui::Key::Enter))
-                                    {
-                                        navigate_target = Some(self.omnibox_text.clone());
-                                    }
+                                                let text_edit = egui::TextEdit::singleline(
+                                                    &mut self.omnibox_text,
+                                                )
+                                                .hint_text(ml_i18n::text("omnibox-placeholder"))
+                                                .frame(false)
+                                                .text_color(egui::Color32::from_rgb(
+                                                    0xE6, 0xE9, 0xF2,
+                                                ));
+
+                                                let response = ui.add_sized(
+                                                    [omnibox_width - 32.0, 18.0],
+                                                    text_edit,
+                                                );
+                                                self.omnibox_focused = response.has_focus();
+
+                                                if (response.lost_focus() || response.has_focus())
+                                                    && ui.input(|i| i.key_pressed(egui::Key::Enter))
+                                                {
+                                                    navigate_target =
+                                                        Some(self.omnibox_text.clone());
+                                                }
+                                            });
+                                        });
+
+                                    let shield_pill = egui::RichText::new("🛡 0")
+                                        .size(11.0)
+                                        .color(egui::Color32::from_rgb(0x4A, 0xDE, 0x80));
+                                    let _ = ui
+                                        .button(shield_pill)
+                                        .on_hover_text(ml_i18n::text("toolbar-shield-tooltip"));
+
+                                    let star_btn = egui::RichText::new("☆")
+                                        .size(13.0)
+                                        .color(egui::Color32::from_rgb(0x94, 0xA3, 0xB8));
+                                    let _ = ui
+                                        .button(star_btn)
+                                        .on_hover_text(ml_i18n::text("toolbar-bookmark"));
+
+                                    let ext_btn = egui::RichText::new("🧩")
+                                        .size(12.0)
+                                        .color(egui::Color32::from_rgb(0x94, 0xA3, 0xB8));
+                                    let _ = ui
+                                        .button(ext_btn)
+                                        .on_hover_text(ml_i18n::text("toolbar-extensions"));
+
+                                    let menu_btn = egui::RichText::new("⋮")
+                                        .size(14.0)
+                                        .color(egui::Color32::from_rgb(0x94, 0xA3, 0xB8));
+                                    let _ = ui
+                                        .button(menu_btn)
+                                        .on_hover_text(ml_i18n::text("toolbar-menu"));
                                 });
                             });
                     });
