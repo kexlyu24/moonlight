@@ -10,6 +10,9 @@ toolbar-back = Back
 toolbar-forward = Forward
 toolbar-reload = Reload
 omnibox-placeholder = Search DuckDuckGo or type a URL
+tab-new = New Tab
+tab-close = Close tab
+tab-default-title = New Tab
 "#;
 
 thread_local! {

@@ -1,5 +1,9 @@
 //! Browser shell for Moonlight (windowing, tab strip, omnibox, toolbar).
 
+pub mod tab;
+
+pub use tab::{CloseTabResult, Tab, TabId, TabManager};
+
 use ml_engine::{EngineBackend, HostEvent, HostEventLoopWaker};
 use raw_window_handle::{HasDisplayHandle, HasWindowHandle};
 use tracing::{error, info, warn};
@@ -61,6 +65,7 @@ pub struct BrowserApp<B: EngineBackend> {
     egui_painter: Option<egui_glow::Painter>,
     omnibox_text: String,
     omnibox_focused: bool,
+    tab_manager: TabManager,
 }
 
 impl<B: EngineBackend> BrowserApp<B> {
@@ -76,6 +81,7 @@ impl<B: EngineBackend> BrowserApp<B> {
         visuals.override_text_color = Some(egui::Color32::from_rgb(0xE6, 0xE9, 0xF2));
         egui_ctx.set_visuals(visuals);
 
+        let tab_manager = TabManager::new(initial_url.clone());
         let omnibox_text = initial_url.to_string();
 
         Self {
@@ -88,13 +94,25 @@ impl<B: EngineBackend> BrowserApp<B> {
             egui_painter: None,
             omnibox_text,
             omnibox_focused: false,
+            tab_manager,
         }
+    }
+
+    /// Read-only reference to the tab manager.
+    pub fn tab_manager(&self) -> &TabManager {
+        &self.tab_manager
+    }
+
+    /// Mutable reference to the tab manager.
+    pub fn tab_manager_mut(&mut self) -> &mut TabManager {
+        &mut self.tab_manager
     }
 
     /// Navigate the browser to a user-entered URL or search query.
     pub fn navigate(&mut self, input: &str) {
         if let Some(url) = resolve_omnibox_input(input) {
             self.omnibox_text = url.to_string();
+            self.tab_manager.update_active_url(url.clone());
             if let Err(e) = self.backend.load_url(&url) {
                 warn!("failed to navigate: {e:?}");
             }
@@ -233,17 +251,93 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                 {
                     let raw_input = state.take_egui_input(window);
                     let mut navigate_target = None;
+                    let mut tab_to_select = None;
+                    let mut tab_to_close = None;
+                    let mut new_tab_requested = false;
 
                     if !self.omnibox_focused {
                         if let Some(current) = self.backend.current_url() {
                             let current_str = current.to_string();
                             if self.omnibox_text != current_str {
                                 self.omnibox_text = current_str;
+                                self.tab_manager.update_active_url(current);
                             }
                         }
                     }
 
                     let full_output = self.egui_ctx.run(raw_input, |ctx| {
+                        egui::TopBottomPanel::top("browser_tabstrip")
+                            .frame(
+                                egui::Frame::default()
+                                    .fill(egui::Color32::from_rgb(0x16, 0x1A, 0x23))
+                                    .inner_margin(egui::Margin::symmetric(8, 4)),
+                            )
+                            .show(ctx, |ui| {
+                                ui.horizontal(|ui| {
+                                    ui.spacing_mut().item_spacing.x = 4.0;
+
+                                    for (idx, tab) in self.tab_manager.tabs().iter().enumerate() {
+                                        let is_active = idx == self.tab_manager.active_index();
+                                        let bg_color = if is_active {
+                                            egui::Color32::from_rgb(0x26, 0x2C, 0x3D)
+                                        } else {
+                                            egui::Color32::from_rgb(0x1D, 0x22, 0x30)
+                                        };
+                                        let text_color = if is_active {
+                                            egui::Color32::from_rgb(0xE6, 0xE9, 0xF2)
+                                        } else {
+                                            egui::Color32::from_rgb(0x94, 0xA3, 0xB8)
+                                        };
+
+                                        let display_title = tab.display_title(18);
+
+                                        egui::Frame::default()
+                                            .fill(bg_color)
+                                            .corner_radius(egui::CornerRadius::same(6))
+                                            .inner_margin(egui::Margin::symmetric(8, 3))
+                                            .show(ui, |ui| {
+                                                ui.horizontal(|ui| {
+                                                    let title_text =
+                                                        egui::RichText::new(&display_title)
+                                                            .color(text_color)
+                                                            .size(12.0);
+                                                    if ui
+                                                        .selectable_label(is_active, title_text)
+                                                        .clicked()
+                                                        && !is_active
+                                                    {
+                                                        tab_to_select = Some(tab.id);
+                                                    }
+
+                                                    let close_label = egui::RichText::new("×")
+                                                        .color(egui::Color32::from_rgb(
+                                                            0x94, 0xA3, 0xB8,
+                                                        ))
+                                                        .size(12.0);
+                                                    if ui
+                                                        .button(close_label)
+                                                        .on_hover_text(ml_i18n::text("tab-close"))
+                                                        .clicked()
+                                                    {
+                                                        tab_to_close = Some(tab.id);
+                                                    }
+                                                });
+                                            });
+                                    }
+
+                                    let new_tab_btn = egui::RichText::new("+")
+                                        .color(egui::Color32::from_rgb(0xE6, 0xE9, 0xF2))
+                                        .size(13.0);
+                                    if ui
+                                        .button(new_tab_btn)
+                                        .on_hover_text(ml_i18n::text("tab-new"))
+                                        .clicked()
+                                    {
+                                        new_tab_requested = true;
+                                    }
+                                });
+                            });
+
                         egui::TopBottomPanel::top("browser_toolbar")
                             .frame(
                                 egui::Frame::default()
@@ -296,9 +390,52 @@ impl<B: EngineBackend> ApplicationHandler<HostEvent> for BrowserApp<B> {
                             });
                     });
 
+                    if new_tab_requested {
+                        if let Ok(new_url) = Url::parse("https://duckduckgo.com/") {
+                            let _new_id = self.tab_manager.open_tab(new_url.clone());
+                            self.omnibox_text = new_url.to_string();
+                            if let Err(e) = self.backend.load_url(&new_url) {
+                                warn!("failed to navigate on new tab: {e:?}");
+                            }
+                            window.request_redraw();
+                        }
+                    }
+
+                    if let Some(id) = tab_to_select {
+                        if self.tab_manager.select_tab(id) {
+                            if let Some(tab) = self.tab_manager.active_tab() {
+                                self.omnibox_text = tab.url.to_string();
+                                if let Err(e) = self.backend.load_url(&tab.url) {
+                                    warn!("failed to switch tab url: {e:?}");
+                                }
+                            }
+                            window.request_redraw();
+                        }
+                    }
+
+                    if let Some(id) = tab_to_close {
+                        match self.tab_manager.close_tab(id) {
+                            CloseTabResult::Closed { .. } => {
+                                if let Some(tab) = self.tab_manager.active_tab() {
+                                    self.omnibox_text = tab.url.to_string();
+                                    if let Err(e) = self.backend.load_url(&tab.url) {
+                                        warn!("failed to load adjacent tab url: {e:?}");
+                                    }
+                                }
+                                window.request_redraw();
+                            }
+                            CloseTabResult::NoTabsRemaining => {
+                                info!("All tabs closed, exiting application");
+                                event_loop.exit();
+                            }
+                            CloseTabResult::NotFound => {}
+                        }
+                    }
+
                     if let Some(target) = navigate_target {
                         if let Some(url) = resolve_omnibox_input(&target) {
                             self.omnibox_text = url.to_string();
+                            self.tab_manager.update_active_url(url.clone());
                             if let Err(e) = self.backend.load_url(&url) {
                                 warn!("failed to navigate from omnibox: {e:?}");
                             }
@@ -390,5 +527,24 @@ mod tests {
             ml_i18n::text("omnibox-placeholder"),
             "Search DuckDuckGo or type a URL"
         );
+        assert_eq!(ml_i18n::text("tab-new"), "New Tab");
+        assert_eq!(ml_i18n::text("tab-close"), "Close tab");
+        assert_eq!(ml_i18n::text("tab-default-title"), "New Tab");
+    }
+
+    #[test]
+    fn test_tab_manager_integration() {
+        let url = Url::parse("https://example.com/").unwrap();
+        let mut manager = TabManager::new(url.clone());
+        assert_eq!(manager.len(), 1);
+        assert_eq!(manager.active_tab().unwrap().title, "example.com");
+
+        let new_id = manager.open_tab(Url::parse("https://rust-lang.org/").unwrap());
+        assert_eq!(manager.len(), 2);
+        assert_eq!(manager.active_tab().unwrap().id, new_id);
+        assert_eq!(manager.active_tab().unwrap().title, "rust-lang.org");
+
+        manager.update_active_url(Url::parse("https://docs.rs/").unwrap());
+        assert_eq!(manager.active_tab().unwrap().title, "docs.rs");
     }
 }
