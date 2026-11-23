@@ -1,0 +1,43 @@
+# cargo-deny configuration for Moonlight
+# Documentation: https://embarkstudios.github.io/cargo-deny/
+
+[advisories]
+# Known advisories in transitive dependencies pulled in by upstream Servo 0.1.0
+ignore = [
+    "RUSTSEC-2023-0071", # rsa: timing sidechannel (via servo-script)
+    "RUSTSEC-2025-0144", # ml-dsa: timing sidechannel (via servo-script)
+    "RUSTSEC-2026-0258", # h2: empty DATA frames (via servo)
+    "RUSTSEC-2026-0387", # crypto-bigint: timing variability (via servo)
+    "RUSTSEC-2026-0459", # libsqlite3-sys: CVE-2026-119375 (via servo-storage)
+    "RUSTSEC-2026-0594", # cookie: nonce repeat on fork (via servo)
+]
+
+[licenses]
+# Licenses compatible with MPL-2.0
+allow = [
+    "MPL-2.0",
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-3.0",
+    "BSL-1.0",
+    "CC0-1.0",
+    "Zlib",
+    "0BSD",
+    "CDLA-Permissive-2.0",
+    "NCSA",
+]
+confidence-threshold = 0.8
+unused-allowed-license = "allow"
+
+[bans]
+multiple-versions = "warn"
+wildcards = "allow"
+
+[sources]
+unknown-registry = "warn"
+unknown-git = "warn"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

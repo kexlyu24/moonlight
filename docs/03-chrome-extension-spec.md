@@ -61,7 +61,7 @@ Alpha covers 9 API groups, enough for ad blockers, dark mode, and simple tools; 
 | `i18n` + `_locales` folder | Alpha | `getMessage`, `getUILanguage`, `__MSG_*__` placeholders in the manifest |
 | `action` | Alpha | Icon, badge text/color, title, popup, `onClicked` |
 | `tabs` | Alpha | `query`, `get`, `create`, `update`, `remove`, `sendMessage`, `onUpdated`, `onActivated`, `onRemoved` |
-| `scripting` + `content_scripts` | Alpha | `executeScript`, `insertCSS`, `registerContentScripts`; depends on hooks H3/H4 |
+| `scripting` + `content_scripts` | Alpha | `executeScript`, `insertCSS`, `registerContentScripts`; depends on hooks H3/H4; H4 is required to close F2 (see Security principles in the Technical Architecture) |
 | `declarativeNetRequest` | Alpha | Static rulesets, dynamic and session rules, `getMatchedRules`, `setExtensionActionOptions`; feeds the shield |
 | `permissions` + `optional_permissions` | Alpha | `request`, `contains`, `remove`, `onAdded`, `onRemoved` |
 | `alarms` | Alpha | Keep firing while the service worker sleeps |
